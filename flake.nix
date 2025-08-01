@@ -7,8 +7,11 @@
   };
 
   outputs =
-    { self, nixpkgs, pre-commit-hooks }:
-
+    {
+      self,
+      nixpkgs,
+      pre-commit-hooks,
+    }:
     let
       inherit (nixpkgs) lib;
 
