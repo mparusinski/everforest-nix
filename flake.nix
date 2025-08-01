@@ -3,10 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
   };
 
   outputs =
-    { self, nixpkgs }:
+    { self, nixpkgs, pre-commit-hooks }:
 
     let
       inherit (nixpkgs) lib;
@@ -60,6 +61,16 @@
           };
         }
       );
+
+      checks = forAllSystems (system: {
+        pre-commit-check = pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            nixfmt-rfc-style.enable = true;
+            convco.enable = true;
+          };
+        };
+      });
 
       formatter = forAllDevSystems (
         system:
