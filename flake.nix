@@ -43,18 +43,6 @@
     in
 
     {
-      packages = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-          everforestPackages = (import ./default.nix { inherit pkgs; }).packages;
-        in
-        everforestPackages
-        // {
-          default = everforestPackages.timber;
-        }
-      );
-
       devShells = forAllDevSystems (
         system:
         let
@@ -104,7 +92,7 @@
 
       homeModules = {
         default = self.homeModules.everforest;
-        catppuccin = mkModule {
+        everforest = mkModule {
           type = "homeManager";
           file = ./modules/home-manager;
         };
@@ -112,7 +100,7 @@
 
       nixosModules = {
         default = self.nixosModules.everforest;
-        catppuccin = mkModule {
+        everforest = mkModule {
           type = "nixos";
           file = ./modules/nixos;
         };
